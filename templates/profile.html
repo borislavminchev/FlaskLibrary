@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>
+  Welcome, {{name}}!
+</h1>
+
+<table class="search-results">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Tags</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+
+    
+
+
+    {% for book in user_books %}
+        <tr>
+            <form action="/book/action" method="POST">
+                <input type="hidden" name="id" value="{{book.id}}">
+                <input type="hidden" name="title" value="{{book.title}}">
+                <input type="hidden" name="author" value="{{book.author}}">
+                <input type="hidden" name="tags" value="{{book.tags}}">
+                <td>{{book.title}}</td>
+                <td>{{book.author}}</td>
+                <td>{{book.tags}}</td>
+                <td>
+                    <input type="submit" name="Like" value="Like" class="orange-button">
+                    <input type="submit" name="Review" value="Review" class="green-button">
+                </td>
+            </form>
+        </tr>
+    {% endfor %}
+</table>
+
+{% if review %}
+<section class="component">
+    <h3>Review</h3>
+    <form action="/book/review" method="POST" id="review-form">
+        <input type="hidden" name="id" value="{{ review }}">
+        <table id="review-menu">
+            <tr>
+                <td><label for="rev1">1</label></td>
+                <td><label for="rev2">2</label></td>
+                <td><label for="rev3">3</label></td>
+                <td><label for="rev4">4</label></td>
+                <td><label for="rev5">5</label></td>
+            </tr>
+
+            <tr>
+                <td><input type="radio" id="rev1" name="review_rating" value="1" 
+                {% if user_rating and user_rating.rating==1 %} checked {% endif %}></td>
+
+                <td><input type="radio" id="rev2" name="review_rating" value="2"
+                {% if user_rating and user_rating.rating==2 %} checked {% endif %}></td>
+
+                <td><input type="radio" id="rev3" name="review_rating" value="3"
+                {% if user_rating and user_rating.rating==3 %} checked {% endif %}></td>
+
+                <td><input type="radio" id="rev4" name="review_rating" value="4"
+                {% if user_rating and user_rating.rating==4 %} checked {% endif %}></td>
+                
+                <td><input type="radio" id="rev5" name="review_rating" value="5"
+                {% if user_rating and user_rating.rating==5 %} checked {% endif %}></td>
+            </tr>
+        </table>
+        <input class="input-text" type="text" name="content" {% if user_rating %}  value = "{{user_rating.review}}" {% endif %}>
+        <button>Save Review</button>
+    </form>
+</section>
+{% endif %}
+
+{% if recommendations %}
+<section>
+    <h3>Recommended Books</h3>
+    <section>
+        <table class="search-results">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Author</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            {% for recommended_book in recommendations %}
+                <tr>
+                    <td>{{recommended_book.title}}</td>
+                    <td>{{recommended_book.author}}</td>
+                    <form action="/book/borrow" method="post">
+                        <input type="hidden" name="id" value="{{recommended_book.id}}">
+                        <td><input class="red-button" type="submit" name="borrow" value="borrow"></td>
+                    </form>
+                </tr>
+            {% endfor %}
+        </table>
+    </section>
+</section>
+{% endif %}
+{% endblock %}

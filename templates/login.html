@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section>
+    <h3 >Login</h3>
+    <form method="POST" action="/login" id="login">
+        <input class="input-text" type="email" name="email" placeholder="Your Email" autofocus="">
+        <input class="input-text" type="password" name="password" placeholder="Your Password">
+        <button >Login</button>
+    </form>
+</section>
+{% endblock %}

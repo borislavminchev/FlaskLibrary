@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <form action="/book/search" method="post" id="search-menu">
+        <input class="input-text" type="text" name="keyword" placeholder="Type your keyword">
+        <button>Search</button>
+    </form>
+
+
+    {%if books %}
+        <section class="content">
+            <table class="search-results">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Author</th>
+                        {% if current_user.is_authenticated %}
+                            <th>Action</th>
+                        {% endif %}
+                    </tr>
+                </thead>
+                {% for book in books %}
+                    <tr>
+                        <td>{{book.title}}</td>
+                        <td>{{book.author}}</td>
+                        {% if current_user.is_authenticated %}
+                            <form action="/book/borrow" method="post">
+                                <input type="hidden" name="id" value="{{book.id}}">
+                                <td>
+                                    <input type="submit" value="borrow" 
+                                    {% if is_borrowed(current_user.id, book.id) %} disabled class="disabled-button"
+                                    {% else %} class="red-button"
+                                    {% endif %}>
+                                </td>
+                            </form>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+            </table>
+        </section>
+    {% endif %}
+{% endblock %}

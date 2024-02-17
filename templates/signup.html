@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="section">
+    <h3>Sign Up</h3>
+    <div>
+        <form method="POST" action="/signup" id="signup">
+            <input class="input-text" type="email" name="email" placeholder="Email" autofocus="">
+            <input class="input-text"  type="text" name="username" placeholder="Username" autofocus="">
+            <input class="input-text" type="password" name="password" placeholder="Password">
+            <button>Sign Up</button>
+        </form>
+    </div>
+</section>
+{% endblock %}
